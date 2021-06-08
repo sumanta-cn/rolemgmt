@@ -36,26 +36,23 @@
                                     <form class="user">
                                         <div class="form-group row">
                                             <div class="col-sm-6 mb-3 mb-sm-0">
-                                                <input type="text" class="form-control form-control-user" id="exampleFirstName"
-                                                    placeholder="First Name">
+                                                <input type="text" class="form-control form-control-user"
+                                                placeholder="First Name">
                                             </div>
                                             <div class="col-sm-6">
-                                                <input type="text" class="form-control form-control-user" id="exampleLastName"
-                                                    placeholder="Last Name">
+                                                <input type="text" class="form-control form-control-user" placeholder="Last Name">
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <input type="email" class="form-control form-control-user" id="exampleInputEmail"
+                                            <input type="email" class="form-control form-control-user"
                                                 placeholder="Email Address">
                                         </div>
                                         <div class="form-group row">
                                             <div class="col-sm-6 mb-3 mb-sm-0">
-                                                <input type="password" class="form-control form-control-user"
-                                                    id="exampleInputPassword" placeholder="Password">
+                                                <input type="password" class="form-control form-control-user" placeholder="Password">
                                             </div>
                                             <div class="col-sm-6">
-                                                <input type="password" class="form-control form-control-user"
-                                                    id="exampleRepeatPassword" placeholder="Repeat Password">
+                                                <input type="password" class="form-control form-control-user" placeholder="Repeat Password">
                                             </div>
                                         </div>
                                         <a href="login.html" class="btn btn-primary btn-user btn-block">
@@ -67,7 +64,7 @@
                                         <a class="small" href="forgot-password.html">Forgot Password?</a>
                                     </div>
                                     <div class="text-center">
-                                        <a class="small" href="{{ route('admin.login') }}">Already have an account? Login!</a>
+                                        <a class="small" href="{{ route('login') }}">Already have an account? Login!</a>
                                     </div>
                                 </div>
                             </div>
