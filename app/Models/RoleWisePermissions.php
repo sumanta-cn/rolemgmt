@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class AdminDetails extends Model
+class RoleWisePermissions extends Model
 {
     use HasFactory;
 
-    protected $table = 'admin_details';
-
-    public $primaryKey = 'id';
+    protected $fillable = [
+        'role_id', 'permission_id'
+    ];
 }

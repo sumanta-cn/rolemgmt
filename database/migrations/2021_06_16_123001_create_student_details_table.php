@@ -15,16 +15,14 @@ class CreateStudentDetailsTable extends Migration
     {
         Schema::create('student_details', function (Blueprint $table) {
             $table->id();
-            $table->string('full_name');
+            $table->unsignedBigInteger('user_id');
+            $table->string('contact_no');
             $table->integer('roll_no');
-            $table->bigInteger('enroll_no')->unique();
-            $table->integer('dept_id');
-            $table->string('semester');
+            $table->integer('enroll_no');
+            $table->integer('semester');
             $table->string('section');
-            $table->string('email')->unique();
-            $table->string('contact_no')->unique();
-            $table->string('dob');
-            $table->string('password');
+            $table->string('department');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }

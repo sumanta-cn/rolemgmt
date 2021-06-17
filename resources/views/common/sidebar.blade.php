@@ -13,29 +13,56 @@
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
-                <a class="nav-link" href="index.html">
+                <a class="nav-link" href="{{ route('home') }}">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Dashboard</span></a>
+                    <span>Dashboard</span>
+                </a>
             </li>
 
             <!-- Divider -->
             <hr class="sidebar-divider">
 
-            <!-- Nav Item - Pages Collapse Menu -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
-                    aria-expanded="true" aria-controls="collapseTwo">
-                    <i class="fas fa-fw fa-cog"></i>
-                    <span>Components</span>
-                </a>
-                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Custom Components:</h6>
-                        <a class="collapse-item" href="buttons.html">Buttons</a>
-                        <a class="collapse-item" href="cards.html">Cards</a>
-                    </div>
-                </div>
-            </li>
+            @role('admin')
+                <!-- Nav Item - Pages Collapse Menu -->
+                <li class="nav-item {{ Request::is('add-roles*') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('viewroles') }}">
+                        <i class="fas fa-user fa-sm fa-fw mr-2"></i>
+                        <span>Roles</span>
+                    </a>
+                </li>
+                <li class="nav-item {{ Request::is('add-permissions*') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('viewpermissions') }}">
+                        <i class="fas fa-fw fa-cog"></i>
+                        <span>Permissions</span>
+                    </a>
+                </li>
+                <li class="nav-item {{ Request::is('add-user*') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('viewuser') }}">
+                        <i class="fas fa-user fa-sm fa-fw mr-2"></i>
+                        <span>Users</span>
+                    </a>
+                </li>
+                <li class="nav-item {{ Request::is('add-subjects*') ? 'active' : '' }}">
+                    <a class="nav-link" href="#">
+                        <i class="fas fa-book fa-sm fa-fw mr-2"></i>
+                        <span>Subjects</span>
+                    </a>
+                </li>
+                <li class="nav-item {{ Request::is('add-exams*') ? 'active' : '' }}">
+                    <a class="nav-link" href="#">
+                        <i class="far fa-calendar-alt fa-sm fa-fw mr-2"></i>
+                        <span>Schedule Exam</span>
+                    </a>
+                </li>
+            @endrole
+
+            <!-- Divider -->
+            <hr class="sidebar-divider d-none d-md-block">
+
+            <!-- Sidebar Toggler (Sidebar) -->
+            <div class="text-center d-none d-md-inline">
+                <button class="rounded-circle border-0" id="sidebarToggle"></button>
+            </div>
 
         </ul>
         <!-- End of Sidebar -->
