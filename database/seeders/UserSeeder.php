@@ -18,13 +18,13 @@ class UserSeeder extends Seeder
     public function run()
     {
         $admin = Role::where('role_name','admin')->first();
-        $teacher = Role::where('role_name', 'teacher')->first();
-        $mnguser = Permission::where('permission_name','manage-users')->first();
+        $teacher = Role::where('role_name', 'faculty')->first();
+        $mnguser = Permission::where('permission_name','add-user')->first();
         $crtexmppr = Permission::where('permission_name','create-exampaper')->first();
 
         $user1 = new User();
-        $user1->name = 'Jhon Deo';
-        $user1->email = 'jhon@deo.com';
+        $user1->name = 'John Deo';
+        $user1->email = 'john@deo.com';
         $user1->password = Hash::make('admin123');
         $user1->save();
         $user1->roles()->attach($admin);

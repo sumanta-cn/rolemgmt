@@ -15,10 +15,12 @@ class CreateSubjectDetailsTable extends Migration
     {
         Schema::create('subject_details', function (Blueprint $table) {
             $table->id();
-            $table->integer('dept_id');
-            $table->integer('sem_id');
+            $table->unsignedBigInteger('dept_id');
+            $table->unsignedBigInteger('sem_id');
             $table->string('subject_code')->unique();
             $table->string('subject_name');
+            $table->foreign('dept_id')->references('id')->on('departments')->onDelete('cascade');
+            $table->foreign('sem_id')->references('id')->on('semesters')->onDelete('cascade');
             $table->timestamps();
         });
     }

@@ -56,6 +56,16 @@
                 </li>
             @endrole
 
+            @role('faculty')
+                <!-- Nav Item - Pages Collapse Menu -->
+                <li class="nav-item {{ Request::is('create-exampapers*') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('viewexampaper') }}">
+                        <i class="fas fa-user fa-sm fa-fw mr-2"></i>
+                        <span>Create Exampaper</span>
+                    </a>
+                </li>
+            @endrole
+
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
 

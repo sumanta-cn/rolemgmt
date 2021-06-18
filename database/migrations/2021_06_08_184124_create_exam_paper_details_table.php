@@ -18,15 +18,14 @@ class CreateExamPaperDetailsTable extends Migration
             $table->string('exam_paper_code');
             $table->string('subject_code');
             $table->string('ques_type');
-            $table->integer('ques_no');
             $table->string('ques_title');
             $table->string('opt_A');
             $table->string('opt_B');
             $table->string('opt_C');
             $table->string('opt_D');
-            $table->string('answer');
             $table->integer('marks_given');
             $table->string('ques_set_by');
+            $table->foreign('subject_code')->references('subject_code')->on('subject_details')->onDelete('cascade');
             $table->timestamps();
         });
     }

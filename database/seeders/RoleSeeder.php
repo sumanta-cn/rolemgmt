@@ -19,7 +19,7 @@ class RoleSeeder extends Seeder
         $admin->save();
 
         $teacher = new Role();
-        $teacher->role_name = 'teacher';
+        $teacher->role_name = 'faculty';
         $teacher->save();
     }
 }

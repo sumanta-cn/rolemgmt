@@ -15,7 +15,7 @@ class PermissionSeeder extends Seeder
     public function run()
     {
         $mnguser = new Permission();
-        $mnguser->permission_name = 'manage-users';
+        $mnguser->permission_name = 'add-user';
         $mnguser->save();
 
         $crtexmppr = new Permission();
