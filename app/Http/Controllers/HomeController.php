@@ -79,7 +79,19 @@ class HomeController extends Controller
         }
         elseif($request->action == 'update') {
 
-            Role::where('id', $request->roleid)->update(['role_name' => $rolename]);
+            $role = Role::where('id', $request->roleid)->firstOrFail();
+            $role->role_name = $rolename;
+            $role->save();
+
+            $allperm = Permission::all();
+            foreach ($allperm as $perm) {
+                $role->permissions()->detach($perm);
+            }
+
+            foreach($perms as $p) {
+                $permcheck = Permission::where('permission_name', $p)->firstOrFail();
+                $role->permissions()->attach($permcheck);
+            }
         }
         elseif($request->action == 'delete') {
 

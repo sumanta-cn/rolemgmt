@@ -26,7 +26,7 @@
                         </div>
 
                         <div class="form-group row">
-                            <div class="card col-md-12 m-0 p-2 border-left-primary">
+                            <div class="card col-md-10 m-3 p-2 border-left-primary">
                                 <div class="card-body">
                                     <h5>Select Permissions :</h5>
                                     <hr>
@@ -118,12 +118,22 @@
                                                                                     <h5>Select Permissions :</h5>
                                                                                     <hr>
                                                                                     @foreach ($permissions as $perm)
-                                                                                        <div class="form-check">
-                                                                                            <input class="form-check-input" id="selectPermission" type="checkbox" value="{{ $perm->permission_name}}" name="permname[]">
-                                                                                            <label class="form-check-label" for="selectPermission">
-                                                                                                {{ ucfirst($perm->permission_name) }}
-                                                                                            </label>
-                                                                                        </div>
+                                                                                    <div class="form-check">
+                                                                                        <input class="form-check-input" id="selectPermission" type="checkbox" value="{{ $perm->permission_name}}" name="permname[]">
+                                                                                        <label class="form-check-label" for="selectPermission">
+                                                                                            {{ ucfirst($perm->permission_name) }}
+                                                                                        </label>
+                                                                                    </div>
+                                                                                    @foreach ($role->permissions as $perms)
+                                                                                    @if($perm->permission_name == $perms->permission_name)
+                                                                                    <div class="form-check">
+                                                                                        <input class="form-check-input" id="selectPermission" type="checkbox" value="{{ $perm->permission_name}}" name="permname[]" checked>
+                                                                                        <label class="form-check-label" for="selectPermission">
+                                                                                            {{ ucfirst($perm->permission_name) }}
+                                                                                        </label>
+                                                                                    </div>
+                                                                                    @endif
+                                                                                    @endforeach
                                                                                     @endforeach
                                                                                 </div>
                                                                             </div>

@@ -54,9 +54,11 @@
                                             @endforeach
                                         </td>
                                         <td>
-                                            @foreach ($user->permissions as $perm)
-                                                {{ $perm->permission_name }}
-                                            @endforeach
+                                            <ul>
+                                                @foreach ($user->permissions as $perm)
+                                                    <li>{{ $perm->permission_name }}</li>
+                                                @endforeach
+                                            </ul>
                                         </td>
                                         <td>
                                             <a href="#" class="btn btn-primary btn-circle" data-toggle="modal" data-target="#edituser{{ $user->id }}">
