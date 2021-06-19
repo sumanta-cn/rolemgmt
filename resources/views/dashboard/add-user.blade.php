@@ -50,14 +50,26 @@
                                         <td>{{ $user->email }}</td>
                                         <td>
                                             @foreach ($user->roles as $role)
-                                                {{ $role->role_name }}
+                                                @foreach ($rolewithperms as $roles)
+                                                    @if($role->role_name == $roles->role_name)
+                                                        {{ $role->role_name }}
+                                                    @endif
+                                                @endforeach
                                             @endforeach
                                         </td>
                                         <td>
                                             <ul>
-                                                @foreach ($user->permissions as $perm)
-                                                    <li>{{ $perm->permission_name }}</li>
-                                                @endforeach
+                                                @if(count($user->permissions) > 0)
+                                                    @foreach ($rolewithperms as $roles)
+                                                        @foreach ($roles->permissions as $perms)
+                                                            @if($user->hasPermissionThroughRole($perms))
+                                                                <li>{{ $perms->permission_name }}</li>
+                                                            @endif
+                                                        @endforeach
+                                                    @endforeach
+                                                @else
+                                                    <li>No Permission Given</li>
+                                                @endif
                                             </ul>
                                         </td>
                                         <td>

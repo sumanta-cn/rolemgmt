@@ -17,6 +17,10 @@ use Illuminate\Support\Facades\Session;
 
 Auth::routes();
 
+Route::get('/page-not-found', function() {
+    return view('error.404');
+})->name('error404');
+
 Route::get('/dashboard', 'HomeController@index')->name('home');
 
 Route::group(['middleware' => 'role:admin'], function() {
@@ -41,9 +45,10 @@ Route::group(['middleware' => 'role:faculty'], function() {
     Route::get('/create-exampapers', 'UserController@viewExamPaper')->name('viewexampaper');
 });
 
-Route::group(['middleware' => 'role:student'], function() {
+Route::group(['middleware' => 'guest'], function() {
 
     Route::get('/self-registration', 'StudentController@viewRegisterPage')->name('viewselfreg');
 });
+
 
 

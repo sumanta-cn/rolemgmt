@@ -12,6 +12,7 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Session;
 
 class HomeController extends Controller
 {
@@ -132,8 +133,10 @@ class HomeController extends Controller
     public function viewUser() {
 
         $users = User::with('userdetails', 'roles', 'permissions')->get();
+        $rolewithperm = Role::with('permissions')->get();
 
         $data['users'] = $users;
+        $data['rolewithperms'] = $rolewithperm;
 
         return view('dashboard.add-user', $data);
     }
@@ -162,10 +165,10 @@ class HomeController extends Controller
         ]);
 
         $passval = time();
+        Session::put('userpwd', $passval);
 
         $name = $request->name;
         $email = $request->email;
-        $pwd = $request->session()->put('userpwd', $passval);
         $contno = $request->contact_no;
         $department = $request->department;
         $role = $request->rolename;
@@ -184,9 +187,17 @@ class HomeController extends Controller
 
         $rolecheck = Role::where('role_name', $role)->first();
         $adduser->roles()->attach($rolecheck);
-        foreach($perms as $val) {
-            $permcheck = Permission::where('permission_name', $val)->firstOrFail();
-            $adduser->permissions()->attach($permcheck);
+        if($perms != null) {
+            foreach($perms as $val) {
+                $permcheck = Permission::where('permission_name', $val)->firstOrFail();
+                $adduser->permissions()->attach($permcheck);
+            }
+        }
+        else {
+            foreach($rolecheck->permissions as $val) {
+                $permcheck = Permission::where('permission_name', $val->permission_name)->firstOrFail();
+                $adduser->permissions()->attach($permcheck);
+            }
         }
 
         return redirect()->route('viewuser');

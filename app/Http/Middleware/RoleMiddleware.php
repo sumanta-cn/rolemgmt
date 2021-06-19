@@ -14,13 +14,22 @@ class RoleMiddleware
      * @param  \Closure  $next
      * @return mixed
      */
-    public function handle(Request $request, Closure $next, $role, $permission = null)
+    public function handle(Request $request, Closure $next, $role = null, $permission = null)
     {
-        if(!auth()->user()->hasRole($role)) {
-            abort(404);
+        $permission =  $request->path();
+
+        if(auth()->user() != null) {
+
+            if(!auth()->user()->hasRole($role)) {
+                return redirect()->route('error404');
+            }
+            if($permission !== null && !auth()->user()->can($permission)) {
+                return redirect()->route('error404');
+            }
         }
-        if($permission !== null && !auth()->user()->can($permission)) {
-            abort(404);
+        else {
+
+            return redirect()->route('login');
         }
 
         return $next($request);

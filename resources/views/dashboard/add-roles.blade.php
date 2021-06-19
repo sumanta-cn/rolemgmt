@@ -81,7 +81,9 @@
                                                         @endforeach
                                                         </ul>
                                                     @else
-                                                        N/A
+                                                        <ul>
+                                                            <li>No Permission given</li>
+                                                        </ul>
                                                     @endif
                                                 </td>
                                                 <td>
@@ -118,22 +120,21 @@
                                                                                     <h5>Select Permissions :</h5>
                                                                                     <hr>
                                                                                     @foreach ($permissions as $perm)
-                                                                                    <div class="form-check">
-                                                                                        <input class="form-check-input" id="selectPermission" type="checkbox" value="{{ $perm->permission_name}}" name="permname[]">
-                                                                                        <label class="form-check-label" for="selectPermission">
-                                                                                            {{ ucfirst($perm->permission_name) }}
-                                                                                        </label>
-                                                                                    </div>
-                                                                                    @foreach ($role->permissions as $perms)
-                                                                                    @if($perm->permission_name == $perms->permission_name)
+                                                                                    @if($role->hasPermission($perm->permission_name))
                                                                                     <div class="form-check">
                                                                                         <input class="form-check-input" id="selectPermission" type="checkbox" value="{{ $perm->permission_name}}" name="permname[]" checked>
                                                                                         <label class="form-check-label" for="selectPermission">
                                                                                             {{ ucfirst($perm->permission_name) }}
                                                                                         </label>
                                                                                     </div>
+                                                                                    @else
+                                                                                    <div class="form-check">
+                                                                                        <input class="form-check-input" id="selectPermission" type="checkbox" value="{{ $perm->permission_name}}" name="permname[]">
+                                                                                        <label class="form-check-label" for="selectPermission">
+                                                                                            {{ ucfirst($perm->permission_name) }}
+                                                                                        </label>
+                                                                                    </div>
                                                                                     @endif
-                                                                                    @endforeach
                                                                                     @endforeach
                                                                                 </div>
                                                                             </div>
