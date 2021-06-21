@@ -48,7 +48,6 @@ class HomeController extends Controller
         }
 
         $data['role'] = $role;
-        // $data['permission'] = $permission;
 
         return view('dashboard.home', $data);
     }
@@ -134,9 +133,11 @@ class HomeController extends Controller
 
         $users = User::with('userdetails', 'roles', 'permissions')->get();
         $rolewithperm = Role::with('permissions')->get();
+        $perm = Permission::all();
 
         $data['users'] = $users;
         $data['rolewithperms'] = $rolewithperm;
+        $data['permissions'] = $perm;
 
         return view('dashboard.add-user', $data);
     }
@@ -198,6 +199,39 @@ class HomeController extends Controller
                 $permcheck = Permission::where('permission_name', $val->permission_name)->firstOrFail();
                 $adduser->permissions()->attach($permcheck);
             }
+        }
+
+        return redirect()->route('viewuser');
+    }
+
+    public function updateUserDetails(Request $request) {
+
+        $name = $request->username;
+        $email = $request->useremail;
+        $rolename = $request->rolename;
+        $perms = $request->permname;
+
+        $updateusr = User::where('id', $request->userid)->firstOrFail();
+        $updateusr->name = $name;
+        $updateusr->email = $email;
+        $updateusr->save();
+
+        $allrole = Role::all();
+        foreach($allrole as $role) {
+            $updateusr->roles()->detach($role);
+        }
+
+        $rolecheck = Role::where('role_name', $rolename)->first();
+        $updateusr->roles()->attach($rolecheck);
+
+        $allperm = Permission::all();
+        foreach ($allperm as $perm) {
+            $updateusr->permissions()->detach($perm);
+        }
+
+        foreach($perms as $p) {
+            $permcheck = Permission::where('permission_name', $p)->firstOrFail();
+            $updateusr->permissions()->attach($permcheck);
         }
 
         return redirect()->route('viewuser');

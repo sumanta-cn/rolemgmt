@@ -60,8 +60,30 @@
                 <!-- Nav Item - Pages Collapse Menu -->
                 <li class="nav-item {{ Request::is('create-exampapers*') ? 'active' : '' }}">
                     <a class="nav-link" href="{{ route('viewexampaper') }}">
-                        <i class="fas fa-user fa-sm fa-fw mr-2"></i>
+                        <i class="fas fa-book fa-sm fa-fw mr-2"></i>
                         <span>Create Exampaper</span>
+                    </a>
+                </li>
+                <li class="nav-item {{ Request::is('check-exampapers*') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('checkexampaper') }}">
+                        <i class="fas fa-book fa-sm fa-fw mr-2"></i>
+                        <span>Check Exampaper</span>
+                    </a>
+                </li>
+            @endrole
+
+            @role('student')
+                <!-- Nav Item - Pages Collapse Menu -->
+                <li class="nav-item {{ Request::is('start-exam*') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('viewexmpage') }}">
+                        <i class="fas fa-book fa-sm fa-fw mr-2"></i>
+                        <span>Start Exam</span>
+                    </a>
+                </li>
+                <li class="nav-item {{ Request::is('exam-result*') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('exmres') }}">
+                        <i class="fas fa-book fa-sm fa-fw mr-2"></i>
+                        <span>Exam Result</span>
                     </a>
                 </li>
             @endrole

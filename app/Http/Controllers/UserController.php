@@ -17,4 +17,9 @@ class UserController extends Controller
 
         return view('user.create-exampaper', $data);
     }
+
+    public function viewCheckExamPaper() {
+
+        return view('user.check-exam-papers');
+    }
 }

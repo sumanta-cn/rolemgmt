@@ -13,6 +13,13 @@
     <link href="{{ asset('css/sb-admin-2.min.css') }}" rel="stylesheet">
     <link href="{{ asset('vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet">
 
+    <style>
+        form.user .form-control-user {
+
+            padding: 5px 15px;
+        }
+    </style>
+
 </head>
 
 <body class="bg-gradient-primary">
@@ -57,6 +64,62 @@
                                                         <strong>{{ $message }}</strong>
                                                     </span>
                                                 @enderror
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <div class="col-md-12">
+                                                <input id="contact" type="text" class="form-control form-control-user @error('contact') is-invalid @enderror" name="contact" placeholder="Your Contact Number" value="{{ old('contact') }}" required autocomplete="contact" autofocus>
+
+                                                @error('contact')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                @enderror
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <div class="col-md-12">
+                                                <input id="rollno" type="text" class="form-control form-control-user @error('rollno') is-invalid @enderror" name="rollno" placeholder="Your Roll Number" value="{{ old('rollno') }}" required autocomplete="rollno" autofocus>
+
+                                                @error('rollno')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                @enderror
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <div class="col-md-12">
+                                                <select class="form-control form-control-user" name="semester" required>
+                                                    <option value="--Select Semester--">--Select Semester--</option>
+                                                    @foreach ($semesters as $sem)
+                                                        <option value="{{ $sem->semester_no }}">{{ $sem->semester_no }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <div class="col-md-12">
+                                                <select class="form-control form-control-user" name="section" required>
+                                                    <option value="--Select Section--">--Select Section--</option>
+                                                    <option value="A">Section A</option>
+                                                    <option value="B">Section B</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <div class="col-md-12">
+                                                <select class="form-control form-control-user" name="department" required>
+                                                    <option value="--Select Department--">--Select Department--</option>
+                                                    @foreach ($departments as $dept)
+                                                        <option value="{{ $dept->dept_name }}">{{ $dept->dept_name}}</option>
+                                                    @endforeach
+                                                </select>
                                             </div>
                                         </div>
 

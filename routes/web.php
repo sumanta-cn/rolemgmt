@@ -14,7 +14,6 @@ use Illuminate\Support\Facades\Session;
 |
 */
 
-
 Auth::routes();
 
 Route::get('/page-not-found', function() {
@@ -38,17 +37,19 @@ Route::group(['middleware' => 'role:admin'], function() {
     Route::get('/add-user', 'HomeController@viewUser')->name('viewuser');
     Route::get('/add-user-details', 'HomeController@viewUserDetails')->name('adduserdetails');
     Route::post('/add-user-details', 'HomeController@addUserDetails');
+    Route::post('/update-user-details', 'HomeController@updateUserDetails');
 });
 
 Route::group(['middleware' => 'role:faculty'], function() {
 
     Route::get('/create-exampapers', 'UserController@viewExamPaper')->name('viewexampaper');
+    Route::get('/check-exampapers', 'UserController@viewCheckExamPaper')->name('checkexampaper');
 });
 
-Route::group(['middleware' => 'guest'], function() {
+Route::group(['middleware' => 'role:student'], function() {
 
-    Route::get('/self-registration', 'StudentController@viewRegisterPage')->name('viewselfreg');
+    Route::get('/start-exam', 'StudentController@viewExamPage')->name('viewexmpage');
+    Route::get('/exam-result', 'StudentController@getExamResult')->name('exmres');
 });
-
 
 

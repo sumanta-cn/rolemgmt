@@ -49,27 +49,33 @@
                                         <td>{{ $user->name }}</td>
                                         <td>{{ $user->email }}</td>
                                         <td>
-                                            @foreach ($user->roles as $role)
+                                            @if(count($user->roles) > 0)
                                                 @foreach ($rolewithperms as $roles)
-                                                    @if($role->role_name == $roles->role_name)
-                                                        {{ $role->role_name }}
+                                                    @if($user->hasRole($roles->role_name))
+                                                        {{ $roles->role_name }}
                                                     @endif
                                                 @endforeach
-                                            @endforeach
+                                            @else
+                                                No Role Given
+                                            @endif
                                         </td>
                                         <td>
+                                            <h5>Default Permissions: </h5>
                                             <ul>
-                                                @if(count($user->permissions) > 0)
-                                                    @foreach ($rolewithperms as $roles)
-                                                        @foreach ($roles->permissions as $perms)
-                                                            @if($user->hasPermissionThroughRole($perms))
-                                                                <li>{{ $perms->permission_name }}</li>
-                                                            @endif
-                                                        @endforeach
+                                                @foreach ($rolewithperms as $roles)
+                                                    @foreach ($roles->permissions as $perms)
+                                                        @if($user->hasPermissionThroughRole($perms))
+                                                            <li>{{ $perms->permission_name }}</li>
+                                                        @endif
                                                     @endforeach
-                                                @else
-                                                    <li>No Permission Given</li>
-                                                @endif
+                                                @endforeach
+                                            </ul>
+                                            <br>
+                                            <h5>Additional Permissions: </h5>
+                                            <ul>
+                                                @foreach($user->permissions as $perm)
+                                                    <li>{{ $perm->permission_name }}</li>
+                                                @endforeach
                                             </ul>
                                         </td>
                                         <td>
@@ -82,23 +88,59 @@
                                                 <div class="modal-dialog modal-dialog-centered" role="document">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
-                                                            <h5 class="modal-title" id="exampleModalCenterTitle">Edit user
+                                                            <h5 class="modal-title" id="exampleModalCenterTitle">Edit User Details
                                                             </h5>
                                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                                 <span aria-hidden="true">&times;</span>
                                                             </button>
                                                         </div>
                                                         <div class="modal-body">
-                                                            <form class="user" method="POST" action="{{ url('update-users') }}">
+                                                            <form class="user" method="POST" action="{{ url('update-user-details') }}">
                                                                 @csrf
 
                                                                 <div class="form-group row">
-                                                                    <div class="col-sm-6 mb-3 mb-sm-0">
-                                                                        <input type="text" class="form-control" name="user_name" value="{{ $user->user_name }}">
-                                                                        <input type="hidden" name="userid" value="{{ $user->id }}">
-                                                                        <input type="hidden" name="action" value="update">
-                                                                    </div>
+                                                                    <div class="col-sm-12 mb-3 mb-sm-0">
+                                                                        <input type="text" class="form-control col-lg-12 mb-3" name="username" value="{{ $user->name }}">
+                                                                        <input type="email" class="form-control col-lg-12 mb-3" name="useremail" value="{{ $user->email }}">
+                                                                        <div class="card col-md-10 m-3 p-2 border-left-primary">
+                                                                            <div class="card-body">
+                                                                                <h5>Roles :</h5>
+                                                                                <hr>
+                                                                                @foreach ($rolewithperms as $key => $rolenm)
+                                                                                    <div class="form-check">
+                                                                                        <input class="form-check-input" id="selectRole{{ $key }}" type="radio" name="rolename" value="{{ $rolenm->role_name }}"
+                                                                                        @if($user->hasRole($rolenm->role_name)) checked @endif>
+                                                                                        <label class="form-check-label" for="selectRole{{ $key }}">
+                                                                                            {{ ucfirst($rolenm->role_name) }}
+                                                                                        </label>
+                                                                                    </div>
+                                                                                @endforeach
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="card col-md-10 m-3 p-2 border-left-primary">
+                                                                            <div class="card-body">
+                                                                                <h5>Default Permissions :</h5>
+                                                                                <hr>
+                                                                                @foreach ($permissions as $perm)
+                                                                                <div class="form-check">
+                                                                                    <input class="form-check-input" id="selectPermission" type="checkbox" value="{{ $perm->permission_name}}" name="permname[]"
+                                                                                    @if($user->hasPermissionThroughRole($perm))
+                                                                                    checked disabled
+                                                                                    @elseif($user->hasPermission($perm->permission_name))
+                                                                                    checked
+                                                                                    @endif
+                                                                                    >
+                                                                                    <label class="form-check-label" for="selectPermission">
+                                                                                        {{ ucfirst($perm->permission_name) }}
+                                                                                    </label>
+                                                                                </div>
+                                                                                @endforeach
+                                                                            </div>
+                                                                        </div>
 
+                                                                        <input type="hidden" name="userid" value="{{ $user->id }}">
+                                                                    </div>
+                                                                    <br>
                                                                     <div class="col-sm-4">
                                                                         <button type="submit" class="btn btn-primary btn-block">
                                                                             {{ __('Save changes') }}
@@ -121,7 +163,7 @@
                                                 <div class="modal-dialog modal-dialog-centered" role="document">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
-                                                            <h5 class="modal-title" id="exampleModalCenterTitle">Edit user
+                                                            <h5 class="modal-title" id="exampleModalCenterTitle">Delete user
                                                             </h5>
                                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                                 <span aria-hidden="true">&times;</span>

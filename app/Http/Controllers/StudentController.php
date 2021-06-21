@@ -6,8 +6,13 @@ use Illuminate\Http\Request;
 
 class StudentController extends Controller
 {
-    public function viewRegisterPage() {
+    public function viewExamPage() {
 
-        return view('student.self-registration');
+        return view('student.view-exam-page');
+    }
+
+    public function getExamResult() {
+
+        return view('student.view-exam-result');
     }
 }

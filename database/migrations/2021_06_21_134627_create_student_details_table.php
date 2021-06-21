@@ -18,8 +18,8 @@ class CreateStudentDetailsTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->string('contact_no');
             $table->integer('roll_no');
-            $table->integer('enroll_no');
-            $table->integer('semester');
+            $table->string('enroll_no');
+            $table->string('semester');
             $table->string('section');
             $table->string('department');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
