@@ -6,10 +6,10 @@
     <!-- Begin Page Content -->
     <div class="container-fluid">
 
-        {{-- <div class="row">
+        <div class="row">
             <div class="col-lg-6">
                 <div class="pt-4 pr-4 pb-4">
-                    <a href="{{ route('viewuser') }}" class="btn btn-secondary btn-icon-split">
+                    <a href="{{ route('viewexampaperlist') }}" class="btn btn-secondary btn-icon-split">
                         <span class="icon text-white-50">
                             <i class="fas fa-arrow-left"></i>
                         </span>
@@ -18,7 +18,7 @@
                 </div>
             </div>
 
-        </div> --}}
+        </div>
 
         <!-- DataTales Example -->
         <div class="card shadow mb-4">
@@ -60,16 +60,14 @@
                                     <input type="text" class="form-control col-md-6 m-2" name="optC" placeholder="Option C" required>
                                     <input type="text" class="form-control col-md-6 m-2" name="optD" placeholder="Option D" required>
                                 </div>
-                            </div>
 
-                            <div class="form-group row">
                                 <div class="col-md-4 p-2">
                                     <input type="text" class="form-control col-md-6 m-2" name="marks_given" placeholder="Marks For Question" required>
                                 </div>
                             </div>
 
-                            <div class="form-group row m-5 pr-5 pl-5  text-center">
-                                <div class="col-md-3 offset-md-3">
+                            <div class="form-group row mb-0 mt-5">
+                                <div class="col-md-3 offset-md-4">
                                     <button type="submit" class="btn btn-primary btn-user btn-block">
                                         {{ __('Add Paper') }}
                                     </button>

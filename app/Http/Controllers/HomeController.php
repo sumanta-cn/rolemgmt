@@ -66,6 +66,10 @@ class HomeController extends Controller
     public function addRoles(Request $request) {
 
         $rolename = strtolower($request->role_name);
+        $rolecheck = Role::where('role_name', $rolename)->exists();
+        if($rolecheck) {
+            return redirect()->back()->with('rolemissmatch', 'Role already exists.');
+        }
         $perms = $request->permname;
 
         if($request->action == 'create') {
@@ -224,14 +228,27 @@ class HomeController extends Controller
         $rolecheck = Role::where('role_name', $rolename)->first();
         $updateusr->roles()->attach($rolecheck);
 
-        $allperm = Permission::all();
-        foreach ($allperm as $perm) {
-            $updateusr->permissions()->detach($perm);
+        if(count($perms) > 0) {
+
+            $allperm = Permission::all();
+            foreach ($allperm as $perm) {
+                $updateusr->permissions()->detach($perm);
+            }
+
+            foreach($perms as $p) {
+                $permcheck = Permission::where('permission_name', $p)->firstOrFail();
+                $updateusr->permissions()->attach($permcheck);
+            }
         }
 
-        foreach($perms as $p) {
-            $permcheck = Permission::where('permission_name', $p)->firstOrFail();
-            $updateusr->permissions()->attach($permcheck);
+        return redirect()->route('viewuser');
+    }
+
+    public function deleteUserDetails(Request $request) {
+
+        $usercheck = User::where('id', $request->userid)->exists();
+        if($usercheck) {
+            User::where('id', $request->userid)->delete();
         }
 
         return redirect()->route('viewuser');

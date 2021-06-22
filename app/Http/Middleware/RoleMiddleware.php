@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use App\Models\Role;
 use Illuminate\Http\Request;
 
 class RoleMiddleware
@@ -14,16 +15,22 @@ class RoleMiddleware
      * @param  \Closure  $next
      * @return mixed
      */
-    public function handle(Request $request, Closure $next, $role = null, $permission = null)
+    public function handle(Request $request, Closure $next, $permission = null)
     {
-        $permission =  $request->path();
+        $role = auth()->user()->roles[0]['role_name'];
+        $rolecheck = Role::with('permissions')->where('role_name', $role)->get();
 
         if(auth()->user() != null) {
-
-            if(!auth()->user()->hasRole($role)) {
-                return redirect()->route('error404');
-            }
+            // dd(auth()->user()->can($permission));
             if($permission !== null && !auth()->user()->can($permission)) {
+
+                foreach($rolecheck[0]['permissions'] as $perm) {
+                    if($perm->permission_name == $permission) {
+
+                        return redirect()->route('error404');
+                    }
+                }
+
                 return redirect()->route('error404');
             }
         }

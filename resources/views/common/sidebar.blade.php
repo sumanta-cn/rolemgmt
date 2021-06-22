@@ -22,7 +22,7 @@
             <!-- Divider -->
             <hr class="sidebar-divider">
 
-            @role('admin')
+            @if(Auth::user()->can('roles'))
                 <!-- Nav Item - Pages Collapse Menu -->
                 <li class="nav-item {{ Request::is('add-roles*') ? 'active' : '' }}">
                     <a class="nav-link" href="{{ route('viewroles') }}">
@@ -30,36 +30,42 @@
                         <span>Roles</span>
                     </a>
                 </li>
+            @endif
+            @if(Auth::user()->can('permissions'))
                 <li class="nav-item {{ Request::is('add-permissions*') ? 'active' : '' }}">
                     <a class="nav-link" href="{{ route('viewpermissions') }}">
                         <i class="fas fa-fw fa-cog"></i>
                         <span>Permissions</span>
                     </a>
                 </li>
-                <li class="nav-item {{ Request::is('add-user*') ? 'active' : '' }}">
+            @endif
+            @if(Auth::user()->can('users'))
+                <li class="nav-item @if (Request::is('add-user*') || Request::is('add-user-details*')) active @endif">
                     <a class="nav-link" href="{{ route('viewuser') }}">
                         <i class="fas fa-user fa-sm fa-fw mr-2"></i>
                         <span>Users</span>
                     </a>
                 </li>
+            @endif
+            @if(Auth::user()->can('subjects'))
                 <li class="nav-item {{ Request::is('add-subjects*') ? 'active' : '' }}">
                     <a class="nav-link" href="#">
                         <i class="fas fa-book fa-sm fa-fw mr-2"></i>
                         <span>Subjects</span>
                     </a>
                 </li>
+            @endif
+            @if(Auth::user()->can('examscedule'))
                 <li class="nav-item {{ Request::is('add-exams*') ? 'active' : '' }}">
                     <a class="nav-link" href="#">
                         <i class="far fa-calendar-alt fa-sm fa-fw mr-2"></i>
                         <span>Schedule Exam</span>
                     </a>
                 </li>
-            @endrole
-
-            @role('faculty')
-                <!-- Nav Item - Pages Collapse Menu -->
-                <li class="nav-item {{ Request::is('create-exampapers*') ? 'active' : '' }}">
-                    <a class="nav-link" href="{{ route('viewexampaper') }}">
+            @endif
+            @if(Auth::user()->can('exampapers'))
+                <li class="nav-item @if(Request::is('view-exampapers*') || Request::is('create-exampapers*')) active @endif">
+                    <a class="nav-link" href="{{ route('viewexampaperlist') }}">
                         <i class="fas fa-book fa-sm fa-fw mr-2"></i>
                         <span>Create Exampaper</span>
                     </a>
@@ -70,10 +76,8 @@
                         <span>Check Exampaper</span>
                     </a>
                 </li>
-            @endrole
-
-            @role('student')
-                <!-- Nav Item - Pages Collapse Menu -->
+            @endif
+            @if(Auth::user()->can('exams'))
                 <li class="nav-item {{ Request::is('start-exam*') ? 'active' : '' }}">
                     <a class="nav-link" href="{{ route('viewexmpage') }}">
                         <i class="fas fa-book fa-sm fa-fw mr-2"></i>
@@ -86,7 +90,7 @@
                         <span>Exam Result</span>
                     </a>
                 </li>
-            @endrole
+            @endif
 
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">

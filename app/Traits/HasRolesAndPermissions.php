@@ -58,7 +58,7 @@ trait HasRolesAndPermissions
      */
     public function hasPermission($permission)
     {
-        return (bool) $this->permissions->where('permission_name', $permission)->count();
+        return is_object($permission) ? (bool) $this->permissions->where('permission_name', $permission->permission_name)->count() : (bool) $this->permissions->where('permission_name', $permission)->count();
     }
 
     /**
