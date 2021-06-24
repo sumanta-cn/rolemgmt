@@ -90,6 +90,7 @@
                                     <input type="date" class="form-control" name="exam_date" placeholder="Exam Date" required>
                                 </div>
                             </div>
+                            <input type="hidden" name="action" value="create">
 
                             <div class="form-group row mb-0">
                                 <div class="col-md-3 offset-md-4">
@@ -123,10 +124,10 @@
                     dataType: "json",
                     complete: function(data) {
                         var getdata = JSON.parse(JSON.stringify(data));
-                        $("#getsem").val(getdata.responseJSON.getsem.semester_no);
-                        $("#getsemid").val(getdata.responseJSON.getsem.id);
-                        $("#getdept").val(getdata.responseJSON.getdept.dept_name);
-                        $("#getdeptid").val(getdata.responseJSON.getdept.id);
+                        $("#getsem").val(getdata.responseJSON.getdata.semesters[0].semester_no);
+                        $("#getsemid").val(getdata.responseJSON.getdata.sem_id);
+                        $("#getdept").val(getdata.responseJSON.getdata.departments[0].dept_name);
+                        $("#getdeptid").val(getdata.responseJSON.getdata.dept_id);
                     }
                 });
             }

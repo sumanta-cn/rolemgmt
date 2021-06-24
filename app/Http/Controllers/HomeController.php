@@ -43,11 +43,13 @@ class HomeController extends Controller
             $permission = $permission->permission_name;
         }
 
-        if($role == 'admin') {
+        $totaluser = User::count();
+        $totalsubj = Subjects::count();
+        $totalexam = ExamDetails::count();
 
-            $totaluser = User::count();
-            $data['totaluser'] = $totaluser;
-        }
+        $data['totaluser'] = $totaluser;
+        $data['totalsubject'] = $totalsubj;
+        $data['totalexam'] = $totalexam;
 
         $data['role'] = $role;
 
@@ -260,7 +262,7 @@ class HomeController extends Controller
 
         $dept = Department::all();
         $sem = Semester::all();
-        $subj = Subjects::all();
+        $subj = Subjects::with('departments', 'semesters')->get();
 
         $data['departments'] = $dept;
         $data['semesters'] = $sem;
@@ -325,33 +327,25 @@ class HomeController extends Controller
 
     public function viewSceduledExams() {
 
-        $listexams = ExamDetails::all();
-        $sem = Semester::all();
+        $listexams = ExamDetails::with('subjects', 'departments', 'semesters')->get();
         $subj = Subjects::all();
-        $dept = Department::all();
 
-        $data['listexams'] = $listexams;
-        $data['semesters'] = $sem;
         $data['subjects'] = $subj;
-        $data['departments'] = $dept;
+        $data['listexams'] = $listexams;
 
         return view('dashboard.list-exams', $data);
     }
 
     public function viewSceduleExamPage() {
 
-        $sem = Semester::all();
         $subj = Subjects::all();
-        $dept = Department::all();
 
-        $data['semesters'] = $sem;
         $data['subjects'] = $subj;
-        $data['departments'] = $dept;
 
         return view('dashboard.view-schedule-exam', $data);
     }
 
-    public function addSceduledExam(Request $request) {
+    public function crudForScheduledExam(Request $request) {
 
         $this->validate($request, [
             'pass_marks' => ['required', 'numeric'],
@@ -359,18 +353,36 @@ class HomeController extends Controller
             'total_question' => ['required', 'numeric'],
         ]);
 
-        $date = date("d-m-Y", strtotime($request->exam_date));
+        if($request->action == 'create') {
 
-        ExamDetails::create([
-            'sem_id' => $request->semid,
-            'subject_id' => $request->subject,
-            'dept_id' => $request->deptid,
-            'section' => $request->section,
-            'pass_marks' => $request->pass_marks,
-            'full_marks' => $request->full_marks,
-            'exam_date' => $date,
-            'total_question' => $request->total_question,
-        ]);
+            ExamDetails::create([
+                'sem_id' => $request->semid,
+                'subject_id' => $request->subject,
+                'dept_id' => $request->deptid,
+                'section' => $request->section,
+                'pass_marks' => $request->pass_marks,
+                'full_marks' => $request->full_marks,
+                'exam_date' => $request->exam_date,
+                'total_question' => $request->total_question,
+            ]);
+        }
+        elseif($request->action == 'update') {
+
+            ExamDetails::where('id', $request->examid)->update([
+                'sem_id' => $request->semid,
+                'subject_id' => $request->subject,
+                'dept_id' => $request->deptid,
+                'section' => $request->section,
+                'pass_marks' => $request->pass_marks,
+                'full_marks' => $request->full_marks,
+                'exam_date' => $request->exam_date,
+                'total_question' => $request->total_question,
+            ]);
+        }
+        elseif($request->action == 'delete') {
+
+            ExamDetails::where('id', $request->examid)->delete();
+        }
 
         return redirect()->route('listscheduledexam');
     }
@@ -378,12 +390,9 @@ class HomeController extends Controller
     public function getSubjectDetails(Request $request) {
 
         $subjid = $request->subjid;
-        $getdata = Subjects::where('id', $subjid)->first();
-        $getsem = Semester::select('id', 'semester_no')->where('id', $getdata->sem_id)->first();
-        $getdept = Department::select('id', 'dept_name')->where('id', $getdata->dept_id)->first();
+        $getdata = Subjects::with('departments', 'semesters')->where('id', $subjid)->first();
 
-        $data['getsem'] = $getsem;
-        $data['getdept'] = $getdept;
+        $data['getdata'] = $getdata;
 
         return json_encode($data);
     }

@@ -15,17 +15,18 @@ class CreateExamPaperDetailsTable extends Migration
     {
         Schema::create('exam_paper_details', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('exam_details_id');
             $table->string('exam_paper_code');
             $table->string('subject_code');
-            $table->string('ques_type');
             $table->string('ques_title');
             $table->string('opt_A');
             $table->string('opt_B');
             $table->string('opt_C');
             $table->string('opt_D');
+            $table->string('answer');
             $table->integer('marks_given');
             $table->string('ques_set_by');
-            $table->foreign('subject_code')->references('subject_code')->on('subject_details')->onDelete('cascade');
+            $table->foreign('exam_details_id')->references('id')->on('exam_details')->onDelete('cascade');
             $table->timestamps();
         });
     }

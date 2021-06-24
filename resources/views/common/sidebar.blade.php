@@ -64,8 +64,8 @@
                 </li>
             @endif
             @if(Auth::user()->can('exampapers'))
-                <li class="nav-item @if(Request::is('view-exampapers*') || Request::is('create-exampapers*')) active @endif">
-                    <a class="nav-link" href="{{ route('viewexampaperlist') }}">
+                <li class="nav-item @if(Request::is('view-exams*') || Request::is('create-exampapers*')) active @endif">
+                    <a class="nav-link" href="{{ route('viewexams') }}">
                         <i class="fas fa-book fa-sm fa-fw mr-2"></i>
                         <span>Create Exampaper</span>
                     </a>

@@ -50,24 +50,18 @@
                                     <tr>
                                         <td>{{ $sl }}</td>
                                         <td>
-                                            @foreach ($semesters as $sem)
-                                                @if($exam->sem_id == $sem->id)
-                                                    {{ $sem->semester_no }}
-                                                @endif
+                                            @foreach ($exam->semesters as $sem)
+                                                {{ $sem->semester_no }}
                                             @endforeach
                                         </td>
                                         <td>
-                                            @foreach ($subjects as $subj)
-                                                @if($exam->subject_id == $subj->id)
-                                                    {{ $subj->subject_name }}
-                                                @endif
+                                            @foreach ($exam->subjects as $subj)
+                                                {{ $subj->subject_name }}
                                             @endforeach
                                         </td>
                                         <td>
-                                            @foreach ($departments as $dept)
-                                                @if($exam->dept_id == $dept->id)
-                                                    {{ $dept->dept_name }}
-                                                @endif
+                                            @foreach ($exam->departments as $dept)
+                                                {{ $dept->dept_name }}
                                             @endforeach
                                         </td>
                                         <td>{{ $exam->section }}</td>
@@ -79,78 +73,11 @@
                                             <a href="#" class="btn btn-primary btn-circle" data-toggle="modal" data-target="#edituser{{ $exam->id }}">
                                             <i class="fas fa-edit"></i>
                                             </a>
-
-                                            <!-- Modal -->
-                                            <div class="modal fade" id="edituser{{ $exam->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                                                <div class="modal-dialog modal-dialog-centered" role="document">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title" id="exampleModalCenterTitle">Edit User Details
-                                                            </h5>
-                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                <span aria-hidden="true">&times;</span>
-                                                            </button>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            <form class="user" method="POST" action="{{ url('update-sceduled-exam') }}">
-                                                                @csrf
-
-                                                                <div class="form-group row">
-                                                                    <div class="col-sm-12 mb-3 mb-sm-0">
-
-
-                                                                        <input type="hidden" name="examid" value="{{ $exam->id }}">
-                                                                    </div>
-                                                                    <br>
-                                                                    <div class="col-sm-4">
-                                                                        <button type="submit" class="btn btn-primary btn-block">
-                                                                            {{ __('Save changes') }}
-                                                                        </button>
-                                                                    </div>
-                                                                </div>
-                                                            </form>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
                                         </td>
                                         <td>
                                             <a href="#" class="btn btn-danger btn-circle" data-toggle="modal" data-target="#deleteuser{{ $exam->id }}">
                                             <i class="fas fa-trash"></i>
                                             </a>
-
-                                            <!-- Modal -->
-                                            <div class="modal fade" id="deleteuser{{ $exam->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                                                <div class="modal-dialog modal-dialog-centered" role="document">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title" id="exampleModalCenterTitle">Delete User Details
-                                                            </h5>
-                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                <span aria-hidden="true">&times;</span>
-                                                            </button>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            <form class="user" method="POST" action="{{ url('delete-sceduled-exam') }}">
-                                                                @csrf
-
-                                                                <div class="form-group row">
-                                                                    <div class="col-sm-6 mb-3 mb-sm-0">
-                                                                        <p>Are sure want to delete?</p>
-                                                                        <input type="hidden" name="examid" value="{{ $exam->id }}">
-                                                                    </div>
-
-                                                                    <div class="col-sm-4">
-                                                                        <button type="submit" class="btn btn-primary btn-block">
-                                                                            {{ __('Confirm') }}
-                                                                        </button>
-                                                                    </div>
-                                                                </div>
-                                                            </form>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
                                         </td>
                                     </tr>
                                     @php($sl++)
@@ -166,5 +93,167 @@
             </div>
         </div>
     </div>
+
+    @foreach ($listexams as $exam)
+
+        <!-- Modal -->
+        <div class="modal fade" id="edituser{{ $exam->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalCenterTitle">Edit Exam Details
+                        </h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form class="user" method="POST" action="{{ url('update-sceduled-exam') }}">
+                            @csrf
+
+                            <div class="form-group row">
+                                <div class="col-sm-12 mb-3 mb-sm-0">
+                                    <select class="form-control mb-3" name="subject" id="choosesubj{{ $exam->id }}" required>
+                                        <option value="--Select Subject--">--Select Subject--</option>
+                                        @foreach ($subjects as $subj)
+                                        @foreach ($exam->subjects as $sub)
+                                            <option value="{{ $subj->id }}"
+                                                @if($subj->id == $sub->id)
+                                                selected
+                                                @endif>
+                                                {{ $subj->subject_name }}
+                                            </option>
+                                        @endforeach
+                                        @endforeach
+                                    </select>
+                                    <input type="text" class="form-control mb-3" name="semester" id="getsem{{ $exam->id }}" placeholder="Select Subject First"
+                                    @foreach ($exam->semesters as $sem)
+                                        value="{{ $sem->semester_no }}"
+                                    @endforeach
+                                    readonly required>
+                                    <input type="hidden" name="semid" id="getsemid{{ $exam->id }}">
+
+                                    <input type="text" class="form-control mb-3" name="department" id="getdept{{ $exam->id }}" placeholder="Select Subject First"
+                                    @foreach ($exam->departments as $dept)
+                                        value="{{ $dept->dept_name }}"
+                                    @endforeach
+                                    readonly required>
+                                    <input type="hidden" name="deptid" id="getdeptid{{ $exam->id }}">
+
+                                    <select class="form-control mb-3" name="section" required>
+                                        <option value="--Select Section--">--Select Section--</option>
+                                        <option value="A" @if($exam->section == "A")
+                                            selected @endif>Section A</option>
+                                        <option value="B" @if($exam->section == "B")
+                                            selected @endif>Section B</option>
+                                    </select>
+                                    <input type="text" class="form-control mb-3 @error('pass_marks') is-invalid @enderror" name="pass_marks" placeholder="Pass Marks" value="{{ $exam->pass_marks }}" required>
+
+                                    @error('pass_marks')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+
+                                    <input type="text" class="form-control mb-3 @error('full_marks') is-invalid @enderror" name="full_marks" placeholder="Full Marks" value="{{ $exam->full_marks }}" required>
+
+                                    @error('full_marks')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+
+                                    <input type="text" class="form-control mb-3 @error('total_question') is-invalid @enderror" name="total_question" placeholder="Total Number of Questions"
+                                    value="{{ $exam->total_question }}" required>
+
+                                    @error('total_question')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+
+                                    <input type="date" class="form-control mb-3" name="exam_date" placeholder="Exam Date" value="{{ $exam->exam_date }}" required>
+
+                                    <input type="hidden" name="examid" value="{{ $exam->id }}">
+                                    <input type="hidden" name="action" value="update">
+                                </div>
+                                <br>
+                                <div class="col-sm-4 mt-3">
+                                    <button type="submit" class="btn btn-primary btn-block">
+                                        {{ __('Save changes') }}
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="deleteuser{{ $exam->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalCenterTitle">Delete Exam Details
+                        </h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form class="user" method="POST" action="{{ url('delete-sceduled-exam') }}">
+                            @csrf
+
+                            <div class="form-group row">
+                                <div class="col-sm-6 mb-3 mb-sm-0">
+                                    <p>Are sure want to delete?</p>
+                                    <input type="hidden" name="examid" value="{{ $exam->id }}">
+                                    <input type="hidden" name="action" value="delete">
+                                </div>
+
+                                <div class="col-sm-4">
+                                    <button type="submit" class="btn btn-primary btn-block">
+                                        {{ __('Confirm') }}
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            $("#choosesubj{{ $exam->id }}").on('change', function() {
+                var subid = $("#choosesubj{{ $exam->id }}").val();
+                if(subid == '--Select Subject--') {
+                    alert('Please select a subject!');
+                    $("#getsem{{ $exam->id }}").val('');
+                    $("#getsemid{{ $exam->id }}").val('');
+                    $("#getdept{{ $exam->id }}").val('');
+                    $("#getdeptid{{ $exam->id }}").val('');
+                }
+                else {
+
+                    $.ajax({
+
+                        url: "{{ url('get-subj-details') }}",
+                        type: "get",
+                        data: { subjid: subid },
+                        dataType: "json",
+                        complete: function(data) {
+                            var getdata = JSON.parse(JSON.stringify(data));
+                            $("#getsem{{ $exam->id }}").val(getdata.responseJSON.getdata.semesters[0].semester_no);
+                            $("#getsemid{{ $exam->id }}").val(getdata.responseJSON.getdata.sem_id);
+                            $("#getdept{{ $exam->id }}").val(getdata.responseJSON.getdata.departments[0].dept_name);
+                            $("#getdeptid{{ $exam->id }}").val(getdata.responseJSON.getdata.dept_id);
+                        }
+                    });
+                }
+            });
+        </script>
+
+    @endforeach
 
 @include('common.footer')

@@ -78,16 +78,12 @@
                                 @foreach ($subjects as $subj)
                                     <tr>
                                         <td>{{ $sl }}</td>
-                                        @foreach($departments as $dept)
-                                            @if($subj->dept_id == $dept->id)
+                                        @foreach($subj->departments as $dept)
                                             <td>{{ $dept->dept_name }}</td>
-                                            @endif
                                         @endforeach
 
-                                        @foreach($semesters as $sem)
-                                            @if($subj->sem_id == $sem->id)
+                                        @foreach($subj->semesters as $sem)
                                             <td>{{ $sem->semester_no }}</td>
-                                            @endif
                                         @endforeach
 
                                         <td>{{ $subj->subject_code }}</td>
