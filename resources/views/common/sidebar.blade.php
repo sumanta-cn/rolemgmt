@@ -24,7 +24,7 @@
 
             @if(Auth::user()->can('roles'))
                 <!-- Nav Item - Pages Collapse Menu -->
-                <li class="nav-item {{ Request::is('add-roles*') ? 'active' : '' }}">
+                <li class="nav-item {{ Request::is('view-roles*') ? 'active' : '' }}">
                     <a class="nav-link" href="{{ route('viewroles') }}">
                         <i class="fas fa-user fa-sm fa-fw mr-2"></i>
                         <span>Roles</span>
@@ -32,7 +32,7 @@
                 </li>
             @endif
             @if(Auth::user()->can('permissions'))
-                <li class="nav-item {{ Request::is('add-permissions*') ? 'active' : '' }}">
+                <li class="nav-item {{ Request::is('view-permissions*') ? 'active' : '' }}">
                     <a class="nav-link" href="{{ route('viewpermissions') }}">
                         <i class="fas fa-fw fa-cog"></i>
                         <span>Permissions</span>
@@ -40,7 +40,7 @@
                 </li>
             @endif
             @if(Auth::user()->can('users'))
-                <li class="nav-item @if (Request::is('add-user*') || Request::is('add-user-details*')) active @endif">
+                <li class="nav-item @if (Request::is('view-users*') || Request::is('add-user-details*')) active @endif">
                     <a class="nav-link" href="{{ route('viewuser') }}">
                         <i class="fas fa-user fa-sm fa-fw mr-2"></i>
                         <span>Users</span>
@@ -48,16 +48,16 @@
                 </li>
             @endif
             @if(Auth::user()->can('subjects'))
-                <li class="nav-item {{ Request::is('add-subjects*') ? 'active' : '' }}">
-                    <a class="nav-link" href="#">
+                <li class="nav-item {{ Request::is('view-subjects*') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('viewsubject') }}">
                         <i class="fas fa-book fa-sm fa-fw mr-2"></i>
                         <span>Subjects</span>
                     </a>
                 </li>
             @endif
             @if(Auth::user()->can('examscedule'))
-                <li class="nav-item {{ Request::is('add-exams*') ? 'active' : '' }}">
-                    <a class="nav-link" href="#">
+                <li class="nav-item @if (Request::is('list-sceduled-exams*') || Request::is('schedule-exam*')) active @endif">
+                    <a class="nav-link" href="{{ route('listscheduledexam') }}">
                         <i class="far fa-calendar-alt fa-sm fa-fw mr-2"></i>
                         <span>Schedule Exam</span>
                     </a>

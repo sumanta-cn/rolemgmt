@@ -15,14 +15,18 @@ class CreateExamDetailsTable extends Migration
     {
         Schema::create('exam_details', function (Blueprint $table) {
             $table->id();
-            $table->integer('sem_id');
+            $table->unsignedBigInteger('sem_id');
+            $table->unsignedBigInteger('subject_id');
+            $table->unsignedBigInteger('dept_id');
             $table->string('section');
-            $table->string('subject_code');
             $table->integer('pass_marks');
             $table->integer('full_marks');
-            $table->date('exam_date');
+            $table->string('exam_date');
             $table->integer('total_question');
             $table->integer('duration_in_min');
+            $table->foreign('sem_id')->references('id')->on('semesters')->onDelete('cascade');
+            $table->foreign('subject_id')->references('id')->on('subjects')->onDelete('cascade');
+            $table->foreign('dept_id')->references('id')->on('departments')->onDelete('cascade');
             $table->timestamps();
         });
     }

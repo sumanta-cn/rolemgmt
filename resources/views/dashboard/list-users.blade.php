@@ -71,12 +71,14 @@
                                                 @endforeach
                                             </ul>
                                             <br>
-                                            <h5>Additional Permissions: </h5>
-                                            <ul>
-                                                @foreach($user->permissions as $perm)
-                                                    <li>{{ $perm->permission_name }}</li>
-                                                @endforeach
-                                            </ul>
+                                            @if(count($user->permissions) > 0)
+                                                <h5>Additional Permissions: </h5>
+                                                <ul>
+                                                    @foreach($user->permissions as $perm)
+                                                        <li>{{ $perm->permission_name }}</li>
+                                                    @endforeach
+                                                </ul>
+                                            @endif
                                         </td>
                                         <td>
                                             <a href="#" class="btn btn-primary btn-circle" data-toggle="modal" data-target="#edituser{{ $user->id }}">

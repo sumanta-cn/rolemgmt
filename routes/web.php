@@ -24,27 +24,43 @@ Route::get('/dashboard', 'HomeController@index')->name('home');
 
 Route::group(['middleware' => 'permission:roles'], function() {
 
-    Route::get('/add-roles', 'HomeController@viewRoles')->name('viewroles');
-    Route::post('/add-roles', 'HomeController@addRoles');
-    Route::post('/update-roles', 'HomeController@addRoles');
-    Route::post('/delete-roles', 'HomeController@addRoles');
+    Route::get('/view-roles', 'HomeController@viewRoles')->name('viewroles');
+    Route::post('/add-roles', 'HomeController@crudForRoles');
+    Route::post('/update-roles', 'HomeController@crudForRoles');
+    Route::post('/delete-roles', 'HomeController@crudForRoles');
 });
 
 Route::group(['middleware' => 'permission:permissions'], function() {
 
-    Route::get('/add-permissions', 'HomeController@viewPermissions')->name('viewpermissions');
-    Route::post('/add-permissions', 'HomeController@addPermissions');
-    Route::post('/update-permissions', 'HomeController@addPermissions');
-    Route::post('/delete-permissions', 'HomeController@addPermissions');
+    Route::get('/view-permissions', 'HomeController@viewPermissions')->name('viewpermissions');
+    Route::post('/add-permissions', 'HomeController@crudForPermissions');
+    Route::post('/update-permissions', 'HomeController@crudForPermissions');
+    Route::post('/delete-permissions', 'HomeController@crudForPermissions');
 });
 
 Route::group(['middleware' => 'permission:users'], function() {
 
-    Route::get('/add-user', 'HomeController@viewUser')->name('viewuser');
+    Route::get('/view-users', 'HomeController@viewUser')->name('viewuser');
     Route::get('/add-user-details', 'HomeController@viewUserDetails')->name('adduserdetails');
     Route::post('/add-user-details', 'HomeController@addUserDetails');
     Route::post('/update-user-details', 'HomeController@updateUserDetails');
     Route::post('/delete-user-details', 'HomeController@deleteUserDetails');
+});
+
+Route::group(['middleware' => 'permission:subjects'], function() {
+
+    Route::get('/view-subjects', 'HomeController@viewSubjects')->name('viewsubject');
+    Route::post('/add-subjects', 'HomeController@crudForSubjects');
+    Route::post('/update-subjects', 'HomeController@crudForSubjects');
+    Route::post('/delete-subjects', 'HomeController@crudForSubjects');
+});
+
+Route::group(['middleware' => 'permission:subjects'], function() {
+
+    Route::get('/list-sceduled-exams', 'HomeController@viewSceduledExams')->name('listscheduledexam');
+    Route::get('/schedule-exam', 'HomeController@viewSceduleExamPage')->name('scheduleanexam');
+    Route::get('/get-subj-details', 'HomeController@getSubjectDetails');
+    Route::post('/schedule-exam', 'HomeController@addSceduledExam');
 });
 
 Route::group(['middleware' => 'permission:exampapers'], function() {

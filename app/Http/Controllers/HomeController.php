@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\Semester;
+use App\Models\Subjects;
 use App\Models\Department;
 use App\Models\Permission;
+use App\Models\ExamDetails;
 use App\Models\UserDetails;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -63,7 +65,7 @@ class HomeController extends Controller
         return view('dashboard.add-roles', $data);
     }
 
-    public function addRoles(Request $request) {
+    public function crudForRoles(Request $request) {
 
         $rolename = strtolower($request->role_name);
         $rolecheck = Role::where('role_name', $rolename)->exists();
@@ -113,7 +115,7 @@ class HomeController extends Controller
         return view('dashboard.add-permissions', $data);
     }
 
-    public function addPermissions(Request $request) {
+    public function crudForPermissions(Request $request) {
 
         $permission = Str::slug($request->permission_name);
 
@@ -143,7 +145,7 @@ class HomeController extends Controller
         $data['rolewithperms'] = $rolewithperm;
         $data['permissions'] = $perm;
 
-        return view('dashboard.add-user', $data);
+        return view('dashboard.list-users', $data);
     }
 
     public function viewUserDetails() {
@@ -252,5 +254,137 @@ class HomeController extends Controller
         }
 
         return redirect()->route('viewuser');
+    }
+
+    public function viewSubjects() {
+
+        $dept = Department::all();
+        $sem = Semester::all();
+        $subj = Subjects::all();
+
+        $data['departments'] = $dept;
+        $data['semesters'] = $sem;
+        $data['subjects'] = $subj;
+
+        return view('dashboard.add-subjects', $data);
+    }
+
+    public function crudForSubjects(Request $request) {
+
+        if($request->action == 'create') {
+
+            $deptid = $request->department;
+            $semid = $request->semester;
+            $subjname = $request->subj_name;
+
+            $subcheck = Subjects::where('subject_name', $subjname)->exists();
+            if($subcheck) {
+
+                return redirect()->back()->with('suberror', 'Subject Name Exists!');
+            }
+
+            $dept = Department::where('id', $deptid)->first();
+            $subjectcode = $dept->dept_name . $deptid . $semid;
+
+            Subjects::create([
+                'dept_id' => $deptid,
+                'sem_id' => $semid,
+                'subject_code' => $subjectcode,
+                'subject_name' => $subjname
+            ]);
+        }
+        elseif($request->action == 'update') {
+
+            $deptid = $request->department;
+            $semid = $request->semester;
+            $subjname = $request->subj_name;
+
+            $subcheck = Subjects::where('subject_name', $subjname)->exists();
+            if($subcheck) {
+
+                return redirect()->back()->with('suberror', 'Subject Name Exists!');
+            }
+
+            $dept = Department::where('id', $deptid)->first();
+            $subjectcode = $dept->dept_name . $deptid . $semid;
+
+            Subjects::where('id', $request->subjid)->update([
+                'dept_id' => $deptid,
+                'sem_id' => $semid,
+                'subject_code' => $subjectcode,
+                'subject_name' => $subjname
+            ]);
+        }
+        elseif($request->action == 'delete') {
+
+            Subjects::where('id', $request->subjid)->delete();
+        }
+
+        return redirect()->route('viewsubject');
+    }
+
+    public function viewSceduledExams() {
+
+        $listexams = ExamDetails::all();
+        $sem = Semester::all();
+        $subj = Subjects::all();
+        $dept = Department::all();
+
+        $data['listexams'] = $listexams;
+        $data['semesters'] = $sem;
+        $data['subjects'] = $subj;
+        $data['departments'] = $dept;
+
+        return view('dashboard.list-exams', $data);
+    }
+
+    public function viewSceduleExamPage() {
+
+        $sem = Semester::all();
+        $subj = Subjects::all();
+        $dept = Department::all();
+
+        $data['semesters'] = $sem;
+        $data['subjects'] = $subj;
+        $data['departments'] = $dept;
+
+        return view('dashboard.view-schedule-exam', $data);
+    }
+
+    public function addSceduledExam(Request $request) {
+
+        $this->validate($request, [
+            'pass_marks' => ['required', 'numeric'],
+            'full_marks' => ['required', 'numeric'],
+            'total_question' => ['required', 'numeric'],
+        ]);
+
+        $date = date("d-m-Y", strtotime($request->exam_date));
+
+        ExamDetails::create([
+            'sem_id' => $request->semid,
+            'subject_id' => $request->subject,
+            'dept_id' => $request->deptid,
+            'section' => $request->section,
+            'pass_marks' => $request->pass_marks,
+            'full_marks' => $request->full_marks,
+            'exam_date' => $date,
+            'total_question' => $request->total_question,
+        ]);
+
+        return redirect()->route('listscheduledexam');
+    }
+
+    public function getSubjectDetails(Request $request) {
+
+        $subjid = $request->subjid;
+        $getdata = Subjects::where('id', $subjid)->first();
+        $getsem = Semester::select('id', 'semester_no')->where('id', $getdata->sem_id)->first();
+        $getdept = Department::select('id', 'dept_name')->where('id', $getdata->dept_id)->first();
+
+        $data['getsem'] = $getsem;
+        $data['getdept'] = $getdept;
+
+        return json_encode($data);
     }
 }
