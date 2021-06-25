@@ -22,18 +22,19 @@ class UserController extends Controller
     public function viewExamPaper(Request $request) {
 
         $examid = $request->id;
-        $subjects = Subjects::all();
+        $exams = ExamDetails::with('subjects')->where('id', $examid)->get();
 
-        $data['subjects'] = $subjects;
+        $data['examdetails'] = $exams;
         $data['examid'] = $examid;
 
         return view('user.create-exampaper', $data);
     }
 
-    public function createExamPaper(Request $request) {
+    public function crudForExamPaper(Request $request) {
 
         $subjcode = $request->subject;
         $questitle = $request->ques_title;
+        $choice = $request->choicename;
         $optA = $request->optA;
         $optB = $request->optB;
         $optC = $request->optC;
@@ -45,7 +46,7 @@ class UserController extends Controller
         }
 
         $getansr = $request->multipleanswer;
-        if(count($getansr) > 0) {
+        if($getansr) {
 
             sort($getansr);
             $answer = implode(', ', $getansr);
@@ -54,24 +55,63 @@ class UserController extends Controller
         $marks = $request->marks_given;
         $quessetby = auth()->user()->name;
         $examid = $request->examid;
-        $exmpapercode = $subjcode . $examid . rand(0000, 9999);
 
-        ExamPaper::create([
-            'exam_details_id' => $examid,
-            'exam_paper_code' => $exmpapercode,
-            'subject_code' => $subjcode,
-            'ques_title' => $questitle,
-            'opt_A' => $optA,
-            'opt_B' => $optB,
-            'opt_C' => $optC,
-            'opt_D' => $optD,
-            'answer' => $answer,
-            'marks_given' => $marks,
-            'ques_set_by' => $quessetby
-        ]);
+        if($request->action == 'create') {
+
+            $exmpapercode = $subjcode . $examid . '-' . date('mY') ;
+
+            ExamPaper::create([
+                'exam_details_id' => $examid,
+                'exam_paper_code' => $exmpapercode,
+                'subject_code' => $subjcode,
+                'ques_title' => $questitle,
+                'choice_type' => $choice,
+                'opt_A' => $optA,
+                'opt_B' => $optB,
+                'opt_C' => $optC,
+                'opt_D' => $optD,
+                'answer' => $answer,
+                'marks_given' => $marks,
+                'ques_set_by' => $quessetby
+            ]);
+        }
+        elseif($request->action == 'update') {
+
+            $exmpapercode = $request->exampapercode;
+
+            ExamPaper::where('id', $request->paperid)->update([
+                'exam_details_id' => $examid,
+                'exam_paper_code' => $exmpapercode,
+                'subject_code' => $subjcode,
+                'ques_title' => $questitle,
+                'choice_type' => $choice,
+                'opt_A' => $optA,
+                'opt_B' => $optB,
+                'opt_C' => $optC,
+                'opt_D' => $optD,
+                'answer' => $answer,
+                'marks_given' => $marks,
+                'ques_set_by' => $quessetby
+            ]);
+        }
+        elseif($request->action == 'delete') {
+
+            ExamPaper::where('id', $request->paperid)->delete();
+        }
 
         return redirect()->route('viewexams');
     }
+
+    public function viewExampaperList(Request $request) {
+
+        $examid = $request->id;
+        $exampapers = ExamPaper::where('exam_details_id', $examid)->get();
+
+        $data['listexampapers'] = $exampapers;
+
+        return view('user.list-exampapers', $data);
+    }
+
     public function viewCheckExamPaper() {
 
         return view('user.check-exam-papers');

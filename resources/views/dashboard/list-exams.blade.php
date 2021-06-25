@@ -70,12 +70,12 @@
                                         <td>{{ $exam->exam_date }}</td>
                                         <td>{{ $exam->total_question }}</td>
                                         <td>
-                                            <a href="#" class="btn btn-primary btn-circle" data-toggle="modal" data-target="#edituser{{ $exam->id }}">
+                                            <a href="#" class="btn btn-primary btn-circle" data-toggle="modal" data-target="#editexam{{ $exam->id }}">
                                             <i class="fas fa-edit"></i>
                                             </a>
                                         </td>
                                         <td>
-                                            <a href="#" class="btn btn-danger btn-circle" data-toggle="modal" data-target="#deleteuser{{ $exam->id }}">
+                                            <a href="#" class="btn btn-danger btn-circle" data-toggle="modal" data-target="#deleteexam{{ $exam->id }}">
                                             <i class="fas fa-trash"></i>
                                             </a>
                                         </td>
@@ -97,7 +97,7 @@
     @foreach ($listexams as $exam)
 
         <!-- Modal -->
-        <div class="modal fade" id="edituser{{ $exam->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal fade" id="editexam{{ $exam->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -191,7 +191,7 @@
         </div>
 
         <!-- Modal -->
-        <div class="modal fade" id="deleteuser{{ $exam->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal fade" id="deleteexam{{ $exam->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">

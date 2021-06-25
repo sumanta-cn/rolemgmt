@@ -9,6 +9,7 @@ use App\Models\Subjects;
 use App\Models\Department;
 use App\Models\Permission;
 use App\Models\ExamDetails;
+use App\Models\ExamPaper;
 use App\Models\UserDetails;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -46,10 +47,12 @@ class HomeController extends Controller
         $totaluser = User::count();
         $totalsubj = Subjects::count();
         $totalexam = ExamDetails::count();
+        $totalpaper = Exampaper::count();
 
         $data['totaluser'] = $totaluser;
         $data['totalsubject'] = $totalsubj;
         $data['totalexam'] = $totalexam;
+        $data['totalexmpaper'] = $totalpaper;
 
         $data['role'] = $role;
 
@@ -119,7 +122,7 @@ class HomeController extends Controller
 
     public function crudForPermissions(Request $request) {
 
-        $permission = Str::slug($request->permission_name);
+        $permission = $request->permission_name;
 
         if($request->action == 'create') {
 
@@ -232,7 +235,7 @@ class HomeController extends Controller
         $rolecheck = Role::where('role_name', $rolename)->first();
         $updateusr->roles()->attach($rolecheck);
 
-        if(count($perms) > 0) {
+        if($perms) {
 
             $allperm = Permission::all();
             foreach ($allperm as $perm) {
@@ -242,6 +245,13 @@ class HomeController extends Controller
             foreach($perms as $p) {
                 $permcheck = Permission::where('permission_name', $p)->firstOrFail();
                 $updateusr->permissions()->attach($permcheck);
+            }
+        }
+        else {
+
+            $allperm = Permission::all();
+            foreach ($allperm as $perm) {
+                $updateusr->permissions()->detach($perm);
             }
         }
 

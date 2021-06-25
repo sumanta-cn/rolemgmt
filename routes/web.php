@@ -60,11 +60,11 @@ Route::group(['middleware' => 'permission:examscedule'], function() {
 Route::group(['middleware' => 'permission:exampapers'], function() {
 
     Route::get('/view-exams', 'UserController@viewExamList')->name('viewexams');
-    Route::get('/view-exampapers/{id}', 'UserController@viewExamList')->name('viewexampapers');
+    Route::get('/view-exampapers/{id}', 'UserController@viewExampaperList')->name('viewexampapers');
     Route::get('/create-exampapers/{id}', 'UserController@viewExamPaper')->name('createexampapers');
-    Route::post('/create-exampaper', 'UserController@createExamPaper');
-    Route::post('/update-exampapers', 'UserController@updateExamPaper');
-    Route::post('/delete-exampapers', 'UserController@deleteExamPaper');
+    Route::post('/create-exampaper', 'UserController@crudForExamPaper');
+    Route::post('/update-exampapers', 'UserController@crudForExamPaper');
+    Route::post('/delete-exampapers', 'UserController@crudForExamPaper');
     Route::get('/check-exampapers', 'UserController@viewCheckExamPaper')->name('checkexampaper');
 });
 

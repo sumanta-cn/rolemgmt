@@ -17,7 +17,6 @@
                     </a>
                 </div>
             </div>
-
         </div>
 
         <!-- DataTales Example -->
@@ -34,12 +33,10 @@
 
                             <div class="form-group row">
                                 <div class="col-md-6 p-2">
-                                    <select class="form-control" name="subject" required>
-                                        <option value="--Select Subject Code--">--Select Subject Code--</option>
-                                        @foreach ($subjects as $sub)
-                                            <option value="{{ $sub->subject_code }}">{{ $sub->subject_code}}</option>
-                                        @endforeach
-                                    </select>
+                                    @foreach($examdetails as $exam)
+                                        <input type="text" class="form-control col-md-6 m-2" value="{{ $exam->subjects[0]['subject_name'] }} ({{ $exam->subjects[0]['subject_code'] }})" readonly required>
+                                        <input type="hidden" name="subject" value="{{ $exam->subjects[0]['subject_code'] }}">
+                                    @endforeach
                                 </div>
                             </div>
 
@@ -69,6 +66,7 @@
                                 </div>
                             </div>
                             <input type="hidden" name="examid" value="{{ $examid }}">
+                            <input type="hidden" name="action" value="create">
 
                             <div class="form-group row mb-0 mt-5">
                                 <div class="col-md-3 offset-md-4">

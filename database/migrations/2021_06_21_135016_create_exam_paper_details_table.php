@@ -19,6 +19,7 @@ class CreateExamPaperDetailsTable extends Migration
             $table->string('exam_paper_code');
             $table->string('subject_code');
             $table->string('ques_title');
+            $table->string('choice_type');
             $table->string('opt_A');
             $table->string('opt_B');
             $table->string('opt_C');
