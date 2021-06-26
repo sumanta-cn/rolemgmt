@@ -19,4 +19,18 @@ class StudentDetails extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function semesters($semester) {
+
+        $getsem = Semester::where('semester_no', $semester)->first();
+
+        return $getsem;
+    }
+
+    public function departments($department) {
+
+        $getdept = Department::where('dept_name', $department)->first();
+
+        return $getdept;
+    }
 }

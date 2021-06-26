@@ -20,7 +20,7 @@ Route::get('/page-not-found', function() {
     return view('error.404');
 })->name('error404');
 
-Route::get('/dashboard', 'HomeController@index')->name('home');
+Route::get('/dashboard', 'MainController@index')->name('home');
 
 Route::group(['middleware' => 'permission:roles'], function() {
 
@@ -62,15 +62,13 @@ Route::group(['middleware' => 'permission:exampapers'], function() {
     Route::get('/view-exams', 'UserController@viewExamList')->name('viewexams');
     Route::get('/view-exampapers/{id}', 'UserController@viewExampaperList')->name('viewexampapers');
     Route::get('/create-exampapers/{id}', 'UserController@viewExamPaper')->name('createexampapers');
-    Route::post('/create-exampaper', 'UserController@crudForExamPaper');
-    Route::post('/update-exampapers', 'UserController@crudForExamPaper');
-    Route::post('/delete-exampapers', 'UserController@crudForExamPaper');
+    Route::post('/{exmpapersroute}', 'HomeController@crudForExamPaper')->where('exmpapersroute', 'create-exampaper|update-exampapers|delete-exampapers');
     Route::get('/check-exampapers', 'UserController@viewCheckExamPaper')->name('checkexampaper');
 });
 
 Route::group(['middleware' => 'permission:exams'], function() {
 
-    Route::get('/start-exam', 'StudentController@viewExamPage')->name('viewexmpage');
+    Route::post('/start-exam', 'StudentController@viewExamPage')->name('viewexmpage');
     Route::get('/exam-result', 'StudentController@getExamResult')->name('exmres');
 });
 

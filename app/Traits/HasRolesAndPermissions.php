@@ -2,6 +2,7 @@
 
 namespace App\Traits;
 
+use auth;
 use App\Models\Role;
 use App\Models\Permission;
 use App\Models\UserDetails;
@@ -122,5 +123,10 @@ trait HasRolesAndPermissions
     public function studentdetails() {
 
         return $this->hasOne(StudentDetails::class);
+    }
+
+    public function getenrollno() {
+
+        return $this->studentdetails->where('user_id', auth::user()->id)->first();
     }
 }

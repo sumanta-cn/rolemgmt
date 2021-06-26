@@ -13,13 +13,13 @@ class CreateStudExamDetailsTable extends Migration
      */
     public function up()
     {
-        Schema::create('stud_exam_details', function (Blueprint $table) {
+        Schema::create('answer_details', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('exam_given_by');
+            $table->string('enroll_no');
             $table->string('exam_paper_code');
             $table->integer('ques_no');
-            $table->string('ques_title');
-            $table->string('answer_given');
+            $table->string('answer');
+            $table->integer('marks_obtained');
             $table->timestamps();
         });
     }

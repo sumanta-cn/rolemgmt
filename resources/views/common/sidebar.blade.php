@@ -79,13 +79,13 @@
             @endif
             @if(Auth::user()->can('exams'))
                 <li class="nav-item {{ Request::is('start-exam*') ? 'active' : '' }}">
-                    <a class="nav-link" href="{{ route('viewexmpage') }}">
+                    <a id="viewexmpage" class="nav-link" href="{{ route('viewexmpage') }}">
                         <i class="fas fa-book fa-sm fa-fw mr-2"></i>
                         <span>Start Exam</span>
                     </a>
                 </li>
                 <li class="nav-item {{ Request::is('exam-result*') ? 'active' : '' }}">
-                    <a class="nav-link" href="{{ route('exmres') }}">
+                    <a id="exmres" class="nav-link" href="{{ route('exmres') }}">
                         <i class="fas fa-book fa-sm fa-fw mr-2"></i>
                         <span>Exam Result</span>
                     </a>
@@ -102,3 +102,13 @@
 
         </ul>
         <!-- End of Sidebar -->
+
+        @if(Auth::user()->can('exams'))
+            <script>
+                $(document).ready(function() {
+
+                    $("#viewexmpage").addClass('disabled');
+                    $("#exmres").addClass('disabled');
+                });
+            </script>
+        @endif

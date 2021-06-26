@@ -19,45 +19,6 @@ use Illuminate\Support\Facades\Session;
 
 class HomeController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
-    public function index()
-    {
-        $user = Auth::user();
-        foreach($user->roles as $role) {
-            $role = $role->role_name;
-        }
-        foreach($user->permissions as $permission) {
-            $permission = $permission->permission_name;
-        }
-
-        $totaluser = User::count();
-        $totalsubj = Subjects::count();
-        $totalexam = ExamDetails::count();
-        $totalpaper = Exampaper::count();
-
-        $data['totaluser'] = $totaluser;
-        $data['totalsubject'] = $totalsubj;
-        $data['totalexam'] = $totalexam;
-        $data['totalexmpaper'] = $totalpaper;
-
-        $data['role'] = $role;
-
-        return view('dashboard.home', $data);
-    }
 
     public function viewRoles() {
 

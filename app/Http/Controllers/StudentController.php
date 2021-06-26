@@ -2,13 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ExamPaper;
 use Illuminate\Http\Request;
 
 class StudentController extends Controller
 {
-    public function viewExamPage() {
+    public function viewExamPage(Request $request) {
 
-        return view('student.view-exam-page');
+        $examid = $request->examid;
+        $examdetails = ExamPaper::where('exam_details_id', $examid)->simplePaginate(1);
+
+        $data['examdetails'] = $examdetails;
+
+        return view('student.view-exam-page', $data);
     }
 
     public function getExamResult() {

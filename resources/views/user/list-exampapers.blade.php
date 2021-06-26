@@ -269,4 +269,4 @@
 
         @endforeach
 
-        @include('common.footer')
+@include('common.footer')
